@@ -7,7 +7,7 @@
 <mapper namespace="org.zerock.mapper.ReplyMapper">
 	<insert id="insert">
 		insert into tbl_reply (rno, bno, reply, replyer)
-		values (seq_reply.nextval, #{bno}, #{reply}, #{reply})	
+		values (seq_reply.nextval, #{bno}, #{reply}, #{replyer})	
 	</insert>
 	
 	

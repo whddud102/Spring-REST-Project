@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ex03
+Bundle-SymbolicName: ex03
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: ex03.jar,
+ whddu/Desktop/sqldeveloper/jdbc/lib/ojdbc8.jar
+Export-Package: org.zerock.controller,
+ org.zerock.domain,
+ org.zerock.exception,
+ org.zerock.mapper,
+ org.zerock.persistence,
+ org.zerock.service

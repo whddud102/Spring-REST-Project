@@ -54,6 +54,23 @@
 
 </div>
 <!-- /.row -->
+
+<!-- reply.js를 로드 -->
+<script type="text/javascript" src="/resources/js/reply.js"></script>
+<script type="text/javascript">
+	console.log("============================");
+	console.log("JS REPLY TEST");
+	
+	var bnoValue = '<c:out value="${board.bno}"/>';
+	
+	replyService.getList({bno : bnoValue, page : 1}, function(list) {
+		
+		for(var i = 0, len = list.length||0; i < len; i++) {
+			console.log(list[i]);
+		}
+	});
+</script>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		var operForm = $("#operForm");

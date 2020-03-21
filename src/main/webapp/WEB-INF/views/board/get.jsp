@@ -63,12 +63,39 @@
 	
 	var bnoValue = '<c:out value="${board.bno}"/>';
 	
+	// for ReplyService add test
+	/*
+	replyService.add(
+			{reply:"ajax 댓글 등록 테스트", replyer:"어드민", bno : bnoValue}, 
+			function(result) {
+				alert("RESULT : " + result)
+			});
+	*/
+	
+	
+	// for Reply List Test
 	replyService.getList({bno : bnoValue, page : 1}, function(list) {
 		
+		console.log("================= getList()================================")
 		for(var i = 0, len = list.length||0; i < len; i++) {
 			console.log(list[i]);
 		}
+		console.log("==========================================================");
 	});
+	
+	
+	// 댓글 삭제 테스트
+ 	replyService.remove(44, function(status) {
+		console.log("Status: " + status);
+		
+		if(status === "success") {
+			alert("댓글 삭제 완료");
+		}
+		
+	},	function(err) {
+		alert("ERROR : " + err);
+	}); 
+	
 </script>
 
 <script type="text/javascript">

@@ -43,7 +43,7 @@ public class ReplyController {
 		log.info("댓글 등록 결과 카운트 : " + insertCount);
 
 		return insertCount == 1 ? 
-				new ResponseEntity<>(HttpStatus.OK)
+				new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
@@ -86,8 +86,7 @@ public class ReplyController {
 	
 	@DeleteMapping(value = "/{rno}", 
 			produces = {
-					MediaType.APPLICATION_XML_VALUE, 
-					MediaType.APPLICATION_JSON_UTF8_VALUE})
+					MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<String> remove(@PathVariable("rno") Long rno) {
 		log.info("댓글 삭제(댓글 번호 : " + rno + ")");
 		

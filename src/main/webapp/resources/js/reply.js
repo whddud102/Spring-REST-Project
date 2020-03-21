@@ -28,6 +28,9 @@ var replyService = (function() {
 			
 			// http 요청 성공 시 수행되는 이벤트 핸들러
 			success : function(result, status, xhr) {
+				console.log("ajax의 요청 result : " + result);
+				console.log("ajax의 요청 status : " + status);
+				console.log("ajax의 요청 xhr : " + xhr);
 				if(callback) {
 					callback(result);
 				}
@@ -63,12 +66,40 @@ var replyService = (function() {
 				});
 	}
 	
+	function remove(rno, callback, error) {
+		$.ajax({
+			// 전송 방식 지정 (댓글 등록은 post 방식만 처리)
+			type : 'delete',
+			
+			// 요청 url
+			url : '/replies/' + rno,
+			
+			// http 요청 성공 시 수행되는 이벤트 핸들러
+			success : function(result, status, xhr) {
+				if(callback) {
+					console.log("댓글 삭제 요청 성공")
+					callback(result);
+				}
+			},
+			
+			// http 요청 실패 시 수행되는 이벤트 핸들러
+			error :  function(xhr, status, er) {
+				if (error) {
+					console.log("댓글 삭제 요청 실패")
+					error(er);
+				}
+			}
+		})
+	}
+	
+	
 	// 변수에 반환 할 값을 정의
 	// 위에서 정의한 함수를 멤버로 갖는 객체를 반환
 	// javaScript 에서는 {} 로 객체를 표현
 	return {
 		add : add,
-		getList : getList
+		getList : getList,
+		remove : remove
 	};
 	
 })();

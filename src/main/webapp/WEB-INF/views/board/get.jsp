@@ -70,7 +70,7 @@
 			function(result) {
 				alert("RESULT : " + result)
 			});
-	*/
+	
 	
 	
 	// for Reply List Test
@@ -95,6 +95,14 @@
 	},	function(err) {
 		alert("ERROR : " + err);
 	}); 
+	
+	*/
+	
+	replyService.update(
+	{rno:5, bno : bnoValue, reply:"수정된 댓글"}, 
+	function(result) {
+		console.log("진짜 댓글 수정 완료");
+	});
 	
 </script>
 

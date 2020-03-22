@@ -93,13 +93,39 @@ var replyService = (function() {
 	}
 	
 	
+	function update(reply, callback, error) {
+		console.log("댓글 수정......");
+		
+		$.ajax({
+			type : 'put',
+			url: "/replies/" + reply.rno,
+			data: JSON.stringify(reply),
+			contentType: "application/json; charset=utf-8",
+			function(result, status, xhr) {
+				if(callback) {
+					console.log("성공 콜백 호출");
+					callback(result);
+				}
+			},
+			function(xhr, status, er) {
+				if(error) {
+					error(er);
+				}
+			}
+		});
+		
+		console.log("댓글 수정 완료....");
+		
+	}
+	
 	// 변수에 반환 할 값을 정의
 	// 위에서 정의한 함수를 멤버로 갖는 객체를 반환
 	// javaScript 에서는 {} 로 객체를 표현
 	return {
 		add : add,
 		getList : getList,
-		remove : remove
+		remove : remove,
+		update : update
 	};
 	
 })();

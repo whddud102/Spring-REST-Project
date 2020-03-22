@@ -96,12 +96,18 @@
 		alert("ERROR : " + err);
 	}); 
 	
-	*/
 	
 	replyService.update(
 	{rno:5, bno : bnoValue, reply:"수정된 댓글"}, 
 	function(result) {
 		console.log("진짜 댓글 수정 완료");
+	});
+	
+
+	*/
+	
+	replyService.get(10, function(result) {
+		console.log(result);
 	});
 	
 </script>

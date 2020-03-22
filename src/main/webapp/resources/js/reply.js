@@ -118,6 +118,19 @@ var replyService = (function() {
 		
 	}
 	
+	function get(rno, callback, error) {
+		$.get("/replies/" + rno + ".json", function(result) {
+			if(callback) {
+				callback(result);
+			}
+		}).fail(function(xhr, status, err) {
+			if(error) {
+				error();
+			}
+		});
+	}
+	
+	
 	// 변수에 반환 할 값을 정의
 	// 위에서 정의한 함수를 멤버로 갖는 객체를 반환
 	// javaScript 에서는 {} 로 객체를 표현
@@ -125,7 +138,8 @@ var replyService = (function() {
 		add : add,
 		getList : getList,
 		remove : remove,
-		update : update
+		update : update,
+		get : get
 	};
 	
 })();

@@ -131,6 +131,33 @@ var replyService = (function() {
 	}
 	
 	
+	function displayTime(timeValue) {
+		var today = new Date();
+		
+		var gap = today.getDate() - timeValue;
+		
+		var dateObj = new Date(timeValue);
+		var str = "";
+		
+		// 당일 작성된 댓글인 경우
+		if (gap < 1000 * 60 * 60 * 24) {
+			
+			var hh = dateObj.getHours();
+			var mi = dateObj.getMinutes();
+			var ss = dateObj.getSeconds();
+			
+			return [(hh > 9 ? '' : '0') + hh, ':', (mi > 9 ? '' : '0') + mi, ':', (ss > 9 ? '' : '0') + ss].join('');
+		}
+		else {	// 당일 작성된 댓글이 아닌 경우
+			var yy = dateObj.getFullYear();
+			var mm = dateObj.getMonth() + 1; // getMonth() is zero-based
+			var dd = dateObj.getDate();
+			
+			return [yy, '/', (mm > 9 ? '' : '0') + mm, '/', (dd > 9 ? ' ' : '0') + dd].join('');
+		}
+		
+	}
+	
 	// 변수에 반환 할 값을 정의
 	// 위에서 정의한 함수를 멤버로 갖는 객체를 반환
 	// javaScript 에서는 {} 로 객체를 표현
@@ -139,7 +166,8 @@ var replyService = (function() {
 		getList : getList,
 		remove : remove,
 		update : update,
-		get : get
+		get : get,
+		displayTime : displayTime
 	};
 	
 })();

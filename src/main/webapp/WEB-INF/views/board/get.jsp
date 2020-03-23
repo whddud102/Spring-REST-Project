@@ -61,7 +61,7 @@
 </div>
 <!-- /.row -->
 
-<!-- 댓글 목록 -->
+<!-- 댓글 영역 -->
 <div class="row">
 	<div class="col-lg-12">
 
@@ -69,6 +69,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<i class="fa fa-comments fa-fw"></i>댓글
+				<button id="addReplyBtn" class="btn btn-primary btn-xs pull-right">댓글 등록</button>
 			</div>
 			<!-- /.panel-heading -->
 
@@ -122,7 +123,7 @@
 					str += "<div>";
 						str += "<div class='header>'";
 							str += "<strong class='primary-font'>" + list[i].replyer + "</string>";
-							str += "<small class='pull-right text-muted'>" + list[i].replyDate + "</small>";
+							str += "<small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small>";
 						str += "</div>";
 						str += "<p>" + list[i].reply + "</p>";
 					str += "</div>";

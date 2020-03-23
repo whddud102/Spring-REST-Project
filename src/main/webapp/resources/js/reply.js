@@ -98,23 +98,25 @@ var replyService = (function() {
 		
 		$.ajax({
 			type : 'put',
-			url: "/replies/" + reply.rno,
+			url: '/replies/' + reply.rno,
 			data: JSON.stringify(reply),
 			contentType: "application/json; charset=utf-8",
-			function(result, status, xhr) {
+			success:  function(result, status, xhr) {
+				console.log("댓글 수정  : " + result);
+				
 				if(callback) {
-					console.log("성공 콜백 호출");
 					callback(result);
 				}
 			},
-			function(xhr, status, er) {
+			error: function(xhr, status, er) {
+				console.log("댓글 수정 실패.....");
+				
 				if(error) {
 					error(er);
 				}
 			}
 		});
 		
-		console.log("댓글 수정 완료....");
 		
 	}
 	

@@ -76,23 +76,17 @@
 
 			<div class="panel-body">
 				<ul class="chat">
-					<!-- Test Reply
-					 
-					<li class="left clearfix" data-rno='12'>
-						<div>
-							<div class="header">
-								<strong class="primary-font"></strong><small
-									class="pull-right text-muted"></small>
-							</div>
-							<p></p>
-						</div>
-					</li>
-					
-					End test Reply -->
+					<!-- 댓글 영역 -->
 				</ul>
 				<!-- /.end ul -->
 			</div>
-
+			
+			<!-- 댓글의 페이지를 동적으로 출력할 영역 -->	
+			<div class="panel-footer">
+			
+			</div>
+			<!-- end panel footer -->
+			
 			<!-- /.panel .chat-panel -->
 		</div>
 	</div>
@@ -144,6 +138,9 @@
 <!-- reply.js를 로드 -->
 <script type="text/javascript" src="/resources/js/reply.js"></script>
 
+<!-- 동적으로 댓글의 페이지를 출력하는 showReplyPage(replyCnt) 정의 코드 -->
+<script type="text/javascript" src="/resources/js/showReplyPage.js"></script>
+
 <!-- 댓글 관련 js -->
 <script type="text/javascript">
 
@@ -154,13 +151,25 @@
 		showList(1);
 		
 		function showList(page) {
-			replyService.getList({bno: bnoValue, page: page || 1}, function(list) {
+			console.log("댓글 목록 " + page + " 페이지 출력");
+			
+			replyService.getList({bno: bnoValue, page: page || 1}, function(replyCnt, list) {
+					
+				console.log("전체 댓글 수 : " + replyCnt);
 				
+				// page로 -1을 받으면 마지막 댓글페이지로 다시 호출
+				if(page == -1) {
+					pageNum = Math.ceil(replyCnt/10.0);
+					showList(pageNum);
+					return;
+				}
+				
+				pageNum = page;
+				console.log("PageNum = " + pageNum );
 				var str ="";
 				
 				// 댓글 목록이 없으면 공백을 출력하고 종료
 				if(list == null || list.length == 0) {
-					replyUL.html("");
 					return;
 				}
 				
@@ -180,8 +189,10 @@
 				// 댓글 목록 태그를 동적으로 만든 뒤 한번에 추가해줌
 				replyUL.html(str);
 				
+				showReplyPage(replyCnt);
+				
 			});	// end function	
-		} // end showList
+		} // end showList()
 		
 		var modal = $(".modal");
 		// Input 태그 찾기
@@ -193,6 +204,7 @@
 		var modalModBtn = $("#modalModBtn");
 		var modalRemoveBtn = $("#modalRemoveBtn");
 		var modalRegisterBtn = $("#modalRegisterBtn");
+		var modalCloseBtn = $("#modalCloseBtn");
 		
 		// 댓글 등록 버튼에 클릭 리스너 등록
 		$("#addReplyBtn").on("click", function(e) {
@@ -226,10 +238,16 @@
 				modal.modal("hide");
 				
 				// 댓글 등록 성공 후, 갱신된 댓글 목록을 출력
-				showList(1);
+				showList(-1);
 			});
 			
 		});
+		
+		// 닫기 버튼 처리
+		modalCloseBtn.on("click", function(e) {
+			modal.modal("hide");
+		});
+		
 		
 		// 댓글 조회 클릭 이벤트 처리
 		$(".chat").on("click", "li", function(e) {
@@ -260,7 +278,7 @@
 			replyService.update(reply, function(result) {
 				alert(result);
 				modal.modal("hide");
-				showList(1);
+				showList(pageNum);
 			});
 		});
 		
@@ -271,8 +289,23 @@
 			replyService.remove(rno, function(result) {
 				alert("댓글 삭제 완료");
 				modal.modal("hide");
-				showList(1);
+				showList(pageNum);
 			});
+		});
+		
+		
+		replyPageFooter.on("click", "li a", function(e) {
+			e.preventDefault();
+			console.log("페이지 버튼 클릭 됨");
+			
+			// href 속성 값을 가져옴
+			var targetPageNum = $(this).attr("href");
+			
+			console.log("targetPageNum : " + targetPageNum);
+			
+			pageNum = targetPageNum;
+			
+			showList(pageNum);
 		});
 	});
 </script>

@@ -57,7 +57,8 @@ var replyService = (function() {
 				// 성공 콜백
 				function(data) {
 					if(callback) {
-						callback(data);
+						// 콜백 함수에 댓글 목록과 댓글 수를 전달하도록 변경
+						callback(data.replyCnt, data.list);
 					}
 				}).fail(function(xhr, status, err) {
 					if(error) {

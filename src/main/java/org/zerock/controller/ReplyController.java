@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.ReplyPageDTO;
 import org.zerock.domain.ReplyVO;
 import org.zerock.service.ReplyService;
 
@@ -57,7 +58,7 @@ public class ReplyController {
 			produces = {
 					MediaType.APPLICATION_XML_VALUE, 
 					MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<List<ReplyVO>> getList(
+	public ResponseEntity<ReplyPageDTO> getList(
 			@PathVariable("bno") Long bno,	// 경로에서 데이터를 뽑아옴
 			@PathVariable("page") int page) {
 		
@@ -66,7 +67,7 @@ public class ReplyController {
 		
 		log.info(cri);
 		
-		return new ResponseEntity<List<ReplyVO>>(service.getList(cri, bno), HttpStatus.OK);
+		return new ResponseEntity<ReplyPageDTO>(service.getListPage(cri, bno), HttpStatus.OK);
 	}
 	
 	/**

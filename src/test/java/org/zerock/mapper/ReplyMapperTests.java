@@ -15,6 +15,7 @@ import org.zerock.domain.ReplyVO;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import oracle.net.aso.m;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -22,7 +23,7 @@ import lombok.extern.log4j.Log4j;
 public class ReplyMapperTests {
 
 	//테스트를 위한 게시글들의 bno 배열
-	private Long[] bnoArr = {20525L, 20524L, 20523L, 20521L, 20520L};
+	private Long[] bnoArr = {4096L, 4095L, 4094L, 4093L, 4092L};
 	
 	
 	@Setter(onMethod_ = {@Autowired})
@@ -49,7 +50,7 @@ public class ReplyMapperTests {
 	
 	@Test
 	public void testRead() {
-		Long targetLno = 5L;
+		Long targetLno = 11L;
 		
 		ReplyVO vo = mapper.read(targetLno);
 		
@@ -58,14 +59,14 @@ public class ReplyMapperTests {
 	
 	@Test
 	public void testDelete() {
-		Long targetLno = 1L;
+		Long targetLno = 30L;
 		
 		mapper.delete(targetLno);
 	}
 	
 	@Test
 	public void testUpdate() {
-		Long targetLno = 10L;
+		Long targetLno = 11L;
 		
 		ReplyVO vo = mapper.read(targetLno);
 		
@@ -90,4 +91,19 @@ public class ReplyMapperTests {
 		});
 	}
 	
+	@Test
+	public void testList2() {
+		Criteria cri = new Criteria(2, 10);
+		
+		List<ReplyVO> replies = mapper.getListWithPaging(cri, 4096L);
+		
+		replies.forEach(reply -> log.info(reply));
+	}
+	
+	
+	@Test
+	public void testGetCountByBno() {
+		Long bno = 4000L;
+		log.info(bno + "번 게시글의 댓글 수 : " + mapper.getCountByBno(bno));
+	}
 }

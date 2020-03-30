@@ -1,6 +1,7 @@
 package org.zerock.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -15,4 +16,8 @@ public class BoardVO {
 	private Date updateDate;
 	
 	private int replyCnt;	// 게시글에 작성된 댓글의 수
+	
+	// BoardVO 클래스에 첨부파일 처리를 위한 BoardAttachVO의 리스트를 필드로 선언
+	private List<BoardAttachVO> attachList;
+	
 }

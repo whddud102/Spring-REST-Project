@@ -169,20 +169,18 @@
 				var str ="";
 				
 				// 댓글 목록이 없으면 공백을 출력하고 종료
-				if(list == null || list.length == 0) {
-					return;
-				}
-				
-				for(var i = 0; i < list.length || 0; i++) {
-					str += "<li class='left clearfix' data-rno='" + list[i].rno + "'>";
-					str += "<div>";
-						str += "<div class='header>'";
-							str += "<strong class='primary-font'>" + list[i].replyer + "</string>";
-							str += "<small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small>";
+				if(!(list == null || list.length == 0)) {
+					for(var i = 0; i < list.length || 0; i++) {
+						str += "<li class='left clearfix' data-rno='" + list[i].rno + "'>";
+						str += "<div>";
+							str += "<div class='header>'";
+								str += "<strong class='primary-font'>" + list[i].replyer + "</string>";
+								str += "<small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small>";
+							str += "</div>";
+							str += "<p>" + list[i].reply + "</p>";
 						str += "</div>";
-						str += "<p>" + list[i].reply + "</p>";
-					str += "</div>";
-					str += "</li>";
+						str += "</li>";
+					}
 				}
 				
 				

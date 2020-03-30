@@ -6,9 +6,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
 import org.zerock.domain.ReplyPageDTO;
 import org.zerock.domain.ReplyVO;
+import org.zerock.mapper.BoardMapper;
 import org.zerock.mapper.ReplyMapper;
 
 import lombok.Setter;
@@ -21,10 +24,16 @@ public class ReplyServiceImpl implements ReplyService {
 	@Setter(onMethod_ = {@Autowired})
 	private ReplyMapper mapper;	// 영속 계층을 이용해 서비스 구현
 	
+	@Setter(onMethod_ = {@Autowired})
+	private BoardMapper boardMapper;	// 영속 계층을 이용해 서비스 구현
+
+	@Transactional
 	@Override
 	public int register(ReplyVO vo) {
-		
+		// 댓글 등록 및 게시글의 댓글 수 증가
 		log.info("댓글 등록......." + vo);
+		
+		boardMapper.updateReplyCount(vo.getBno(), 1);
 		
 		return mapper.insert(vo);
 	}
@@ -41,9 +50,15 @@ public class ReplyServiceImpl implements ReplyService {
 		return mapper.update(vo);
 	}
 
+	@Transactional
 	@Override
 	public int remove(Long rno) {
+		// 댓글 삭제 및 게시글의 댓글 수 -1
+		
+		ReplyVO replyVO = mapper.read(rno);
+		
 		log.info("댓글 삭제 - 댓글 id : " + rno);
+		boardMapper.updateReplyCount(replyVO.getBno(), -1);
 		return mapper.delete(rno);
 	}
 

@@ -105,4 +105,23 @@ public class BoardMapperTests {
 		
 		list.forEach(board -> log.info(board));
 	}
+	
+	@Test
+	public void testUpdateRelply() {
+		// 200번 게시글로 테스트
+		BoardVO boardVO = mapper.read(200L);
+		
+		log.info("\n\n\n" + boardVO.getBno() + "번 게시글의 댓글 수 : " + boardVO.getReplyCnt() + " \n\n");
+		
+		mapper.updateReplyCount(200L, 1);
+		boardVO = mapper.read(200L);
+		
+		log.info("\n\n댓글 수 + 1 : " + boardVO.getReplyCnt() + " \n\n");
+		
+		mapper.updateReplyCount(200L, -1);
+		boardVO = mapper.read(200L);
+		 
+		log.info("\n\n댓글 수 -1 : " + boardVO.getReplyCnt() + "\n\n");
+		
+	}
 }

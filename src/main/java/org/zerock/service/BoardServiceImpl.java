@@ -19,6 +19,7 @@ public class BoardServiceImpl implements BoardService {
 	// 단일 파라미터를 갖는 생성자는 파라미터가 자동으로 주입 됨
 	private BoardMapper mapper;
 	
+	
 	@Override
 	public void register(BoardVO board) {
 		

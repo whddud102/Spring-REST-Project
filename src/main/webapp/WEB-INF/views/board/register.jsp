@@ -174,9 +174,11 @@ $(document).ready(function() {
 			if(obj.image) {
 				var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
 				
-				str += "<li><div>";
+				str += "<li data-path='" + obj.uploadPath + "'";
+				str += "data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type = '" + obj.image + "'";
+				str += "><div>";
 				str += "<span>" + obj.fileName + "</span>";
-				str += "<button type='button' class='btn btn-warning btn-circle' data-file=\'" + fileCallPath + "\' data-type='image'><i class='fa fa-times'></i></button><br>";
+				str += "<button type='button' class='btn btn-warning btn-circle' data-file=\'" + fileCallPath + "\'><i class='fa fa-times'></i></button><br>";
 				str += "<img src='/display?fileName=" + fileCallPath + "'>";
 				str += "</div>";
 				str += "</li>";
@@ -188,9 +190,11 @@ $(document).ready(function() {
 				var fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
 				var fileLink = fileCallPath.replace(new RegExp(/\\/g), "/");
 				
-				str += "<li><div>";
+				str += "<li data-path='" + obj.uploadPath + "'";
+				str += "data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type = '" + obj.image + "'";
+				str += "><div>";
 				str += "<span>" + obj.fileName + "</span>";
-				str += "<button type='button' class='btn btn-warning btn-circle' data-file=\'" + fileCallPath + "\' data-type='file'><i class='fa fa-times'></i></button><br>";
+				str += "<button type='button' class='btn btn-warning btn-circle' data-file=\'" + fileCallPath + "\' ><i class='fa fa-times'></i></button><br>";
 				str += "<img src='/resources/img/attach.png'></a>";
 				str += "</div>";
 				str += "</li>";
@@ -198,6 +202,7 @@ $(document).ready(function() {
 			}
 		});
 		
+		console.log(str);
 		uploadUL.append(str);
 	}
 	
@@ -224,6 +229,32 @@ $(document).ready(function() {
 		})
 	})
 	
+	
+	var formObj = $("form[role='form']");
+	
+	$("button[type='submit']").on("click", function (e) {
+		e.preventDefault();
+		console.log("게시글 등록 버튼 클릭");
+		
+		var str = "";
+		
+		$(".uploadResult ul li").each(function(i, obj) {
+			// i = index, obj = element
+			var jobj = $(obj);
+			
+			console.dir(jobj);
+			
+			str += "<input type='hidden' name='attachList[" + i + "].fileName' value='" + jobj.data("filename") + "'>";
+			str += "<input type='hidden' name='attachList[" + i + "].uuid' value='" + jobj.data("uuid") + "'>";
+			str += "<input type='hidden' name='attachList[" + i + "].uploadPath' value='" + jobj.data("path") + "'>";
+			str += "<input type='hidden' name='attachList[" + i + "].image' value='" + jobj.data("type") + "'>";
+			
+		});
+		
+		console.log(str);
+		
+		formObj.append(str).submit(); 
+	});
 });
 </script>
 

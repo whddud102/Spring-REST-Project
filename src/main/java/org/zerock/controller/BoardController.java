@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.domain.AttachFileDTO;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
 import org.zerock.domain.pageDTO;
@@ -48,7 +49,14 @@ public class BoardController {
 	
 	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
+		
 		log.info("register: " + board);
+		
+		log.info("\n\n======================== 전달받은 첨부파일 목록 ===========================");
+		if(board.getAttachList() != null) {
+			board.getAttachList().forEach(attach -> log.info(attach));
+		}
+		log.info("======================================================================");
 		
 		service.register(board);	// 새 게시글을 등록
 		

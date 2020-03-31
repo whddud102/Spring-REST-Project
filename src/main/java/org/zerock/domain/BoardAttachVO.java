@@ -11,4 +11,5 @@ public class BoardAttachVO {
 	private boolean image;
 
 	private Long bno;
+	
 }

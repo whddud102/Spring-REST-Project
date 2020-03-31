@@ -152,18 +152,77 @@ $(document).ready(function() {
 			success: function(result) {
 				alert("업로드 성공");
 				console.log(result);
+				showUploadResult(result)
 			}
 		});
 	});
 	
 	function showUploadResult(uploadResultArr) {
+		
 		if(!uploadResultArr || uploadResultArr.length == 0) {
 			return;
 		}
 		
 		// uploadResult 영역의 ul 태그에 접근 
 		var uploadUL = $(".uploadResult ul");
+		
+		var str = "";
+		
+		$(uploadResultArr).each(function(i, obj) {
+			
+			// 이미지 파일인 경우
+			if(obj.image) {
+				var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+				
+				str += "<li><div>";
+				str += "<span>" + obj.fileName + "</span>";
+				str += "<button type='button' class='btn btn-warning btn-circle' data-file=\'" + fileCallPath + "\' data-type='image'><i class='fa fa-times'></i></button><br>";
+				str += "<img src='/display?fileName=" + fileCallPath + "'>";
+				str += "</div>";
+				str += "</li>";
+			} 
+			// 일반 파일인 경우
+			else {
+				
+				// 한글이나 공백등을 url 호출에 적합한 문자열로 변환
+				var fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+				var fileLink = fileCallPath.replace(new RegExp(/\\/g), "/");
+				
+				str += "<li><div>";
+				str += "<span>" + obj.fileName + "</span>";
+				str += "<button type='button' class='btn btn-warning btn-circle' data-file=\'" + fileCallPath + "\' data-type='file'><i class='fa fa-times'></i></button><br>";
+				str += "<img src='/resources/img/attach.png'></a>";
+				str += "</div>";
+				str += "</li>";
+				
+			}
+		});
+		
+		uploadUL.append(str);
 	}
+	
+	$(".uploadResult").on("click", "button", function(e) {
+		
+		var targetFile = $(this).data("file");
+		var type =  $(this).data("type");
+		
+		console.log("제거 대상 파일 : " + targetFile);
+		console.log("제거 파일 타입 : " +type); 
+		
+		
+		var targetLi = $(this).closest("li");
+		
+		$.ajax({
+			url: "/deleteFile",
+			data: {fileName : targetFile, type: type},
+			// 서버에서 전달받을 데이터 타입
+			type: "POST",
+			success: function(result) {
+				alert("업로드 파일 삭제 성공 : " + targetFile);
+				targetLi.remove();
+			}
+		})
+	})
 	
 });
 </script>

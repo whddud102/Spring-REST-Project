@@ -17,7 +17,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				Board List Page
-				<button id="regBtn" type="button" class="btn btn-xs pull-right">게시글
+				<button id="regBtn" type="button" class="btn btn-info btn-xs pull-right">게시글
 					등록</button>
 			</div>
 			<!-- /.panel-heading -->

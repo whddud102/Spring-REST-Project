@@ -150,6 +150,53 @@ public class UploadController {
 		return new ResponseEntity<>("deleted", HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	@ResponseBody
+	public ResponseEntity<Resource> downloadFile(@RequestHeader("User-Agent") String userAgent, String fileName) {
+		log.info("file Name for download : " +  fileName);
+		
+		Resource resource = new FileSystemResource("C:\\upload\\" + fileName);
+		
+		if(!resource.exists()) {
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+		}
+		
+		
+		String resourceName = resource.getFilename();
+		String resourceOriginalName = resourceName.substring(resourceName.indexOf("_") + 1);
+		HttpHeaders headers = new HttpHeaders();
+		
+		try {
+			String downloadName = null;
+			
+			// IE 인 경우
+			if(userAgent.contains("Trident")) {
+				log.info("IE Browser");
+				
+				downloadName = URLEncoder.encode(resourceOriginalName, "UTF-8").replaceAll("\\+", " ");
+				
+				log.info("IE name: " + downloadName);
+			} else if (userAgent.contains("Edge")) {	// Edge 인 경우
+				
+				log.info("Edge Browser");
+				downloadName = URLEncoder.encode(resourceOriginalName, "UTF-8");
+				log.info("Edge name: " + downloadName);
+			
+			} else { // chrome과 그 외의 경우
+				log.info("Chrome Browser");
+				downloadName = new String(resourceOriginalName.getBytes("UTF-8"), "ISO-8859-1");
+			}
+			
+			headers.add("Content-Disposition", "attachment; filename=" + downloadName);
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+	}
+	
 	
 	private String getFolder() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

@@ -4,29 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../includes/header.jsp" %>
 
-<style>
-	.uploadResult {
-		width: 100%;
-		background-color: gray;
-	}
-	
-	.uploadResult ul {
-		display: flex;
-		flex-flow: row;
-		justify-content: center;
-		align-items: center;
-	}
-	
-	.uploadResult ul li {
-		list-style: none;
-		padding: 10px;
-	}
-	
-	.uploadResult ul li img{
-		width: 60px;
-	}
-
-</style>
 
 	<div class="row">
 		<div class="col-lg-12">

@@ -4,6 +4,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../includes/header.jsp"%>
 
+<style >
+
+	
+</style>
+
+
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">게시글 조회</h1>
@@ -60,6 +66,31 @@
 	<!-- end panel -->
 </div>
 <!-- /.row -->
+
+<!-- 이미지의 원본을 보여주기 위한 div 영역 -->
+<div class="bigPictureWrapper">
+	<div class="bigPicture">
+		
+	</div>
+</div>
+
+<!-- 첨부파일 영역 -->
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">첨부파일</div>
+			<!-- /.panel heading -->
+			<div class="panel-body">
+				<div class="uploadResult">
+					<ul>
+						<!--  동적으로 첨부파일 목록을 보여줄 영역 -->
+					</ul>				
+				</div>
+			</div>
+			<!-- /.pnael body -->
+		</div>
+	</div>
+</div>
 
 <!-- 댓글 영역 -->
 <div class="row">
@@ -321,6 +352,85 @@
 			operForm.find("#bno").remove();
 			operForm.attr("action", "/board/list");
 			operForm.submit();
+		});
+	});
+</script>
+
+<script type="text/javascript">
+	// 조회 화면 로딩 시, 게시글의 첨부파일 목록을 받아옴
+	$(document).ready(function() {
+		var bno = '<c:out value ="${board.bno}"/>';
+		
+		$.getJSON("/board/getAttachList", {bno : bno}, function(arr) {
+			console.log(arr);
+			
+			var str = "";
+			
+			$(arr).each(function(i, attach) {
+				
+				// 이미지 파일인 경우
+				if(attach.image) {
+					var fileCallPath = encodeURIComponent(attach.uploadPath + "/s_" + attach.uuid + "_" + attach.fileName);
+					
+					str += "<li data-path='" + attach.uploadPath + "'";
+					str += "data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type = '" + attach.image + "'";
+					str += "><div>";
+					str += "<img src='/display?fileName=" + fileCallPath + "'>";
+					str += "</div>";
+					str += "</li>";
+				} 
+				// 일반 파일인 경우
+				else {
+					// 한글이나 공백등을 url 호출에 적합한 문자열로 변환
+					var fileCallPath = encodeURIComponent(attach.uploadPath + "/" + attach.uuid + "_" + attach.fileName);
+					
+					str += "<li data-path='" + attach.uploadPath + "'";
+					str += "data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type = '" + attach.image + "'";
+					str += "><div>";
+					str += "<span>" + attach.fileName + "</span><br>";
+					str += "<img src='/resources/img/attach.png'></a>";
+					str += "</div>";
+					str += "</li>";
+					
+				}
+			});
+				
+			$(".uploadResult ul").html(str);
+		});
+		
+		$(".uploadResult").on("click", "li", function(e) {
+			console.log("view image");
+			
+			var liObj = $(this);
+			
+			var path = encodeURIComponent(liObj.data("path") + "/" + liObj.data("uuid") + "_" + liObj.data("filename"));
+			
+			// image type 인 경우
+			if(liObj.data("type")) {
+				showImage(path.replace(new RegExp(/\\/g), "/"));
+			} else {
+				// download
+				self.location = "/download?fileName=" + path
+			}
+		});
+		
+		function showImage(fileCallPath) {
+			alert(fileCallPath);
+			
+			$(".bigPictureWrapper").css("display", "flex").show();
+			
+			$(".bigPicture").html("<img src='/display?fileName=" + fileCallPath + "'>")
+			.animate({width: "100%", height: "100%"}, 1000);
+			
+		}
+		
+		
+		$(".bigPictureWrapper").on("click", function(e) {
+			$(".bigPicture").animate({width: "0%", height: "0%"}, 1000);
+			setTimeout(function() {
+				$(".bigPictureWrapper").hide();
+			}, 1000);
+			
 		});
 	});
 </script>

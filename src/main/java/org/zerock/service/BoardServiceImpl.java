@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.zerock.domain.BoardAttachVO;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
 import org.zerock.mapper.BoardAttachMapper;
@@ -91,6 +92,14 @@ public class BoardServiceImpl implements BoardService {
 		log.info("get total count");
 		return mapper.getTotalCount(cri);
 	}
+
+	@Override
+	public List<BoardAttachVO> getAttachList(Long bno) {
+		log.info("게시글 " + bno + "번의 첨부파일 목록을 가져옴.........");
+		return attachMapper.findByBno(bno);
+	}
+	
+	
 	
 
 }

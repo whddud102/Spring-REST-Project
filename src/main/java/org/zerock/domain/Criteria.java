@@ -30,6 +30,7 @@ public class Criteria {
 		return type == null? new String[] {} : type.split("");
 	}
 	
+	// 필요한 파라미터를 담은 uri를 반환
 	public String getListLink() {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
 				.queryParam("pageNum", this.pageNum)
@@ -39,4 +40,6 @@ public class Criteria {
 		
 		return builder.toUriString();
 	}
+	
+	
 }

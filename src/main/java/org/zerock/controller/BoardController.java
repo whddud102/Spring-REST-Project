@@ -1,5 +1,8 @@
 package org.zerock.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -92,17 +95,6 @@ public class BoardController {
 		return "redirect:/board/list" + cri.getListLink();
 	}
 	
-	@PostMapping("/remove")
-	public String remove(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
-		
-		log.info("remove........");
-		if(service.remove(bno)) {
-			rttr.addFlashAttribute("result", "success");
-		}
-		
-		return "redirect:/board/list" + cri.getListLink();
-	}
-
 	@GetMapping("/register")
 	public void register() {
 		// 게시글 등록화면으로 안내해주는 역할만 수행
@@ -116,5 +108,63 @@ public class BoardController {
 		log.info(service.getAttachList(bno));
 		
 		return new ResponseEntity<List<BoardAttachVO>>(service.getAttachList(bno), HttpStatus.OK);
+	}
+	
+	/**
+	 * 첨부 파일과 게시글의 정보를 DB에서 먼저 제거 후, 성공했다면 실제 첨부파일을 제거
+	 * @param bno 게시글 번호
+	 * @param cri 검색 조건
+	 * @param rttr redirect 속성 객체
+	 * @return
+	 */
+	@PostMapping("/remove")
+	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr) {
+		log.info(" ====== 첨부 파일 제거 ======");
+
+		// 첨부파일들의 정보 목록을 가져옴
+		List<BoardAttachVO> attachList = service.getAttachList(bno);
+		
+		// DB상에서 데이터를 제거
+		if(service.remove(bno)) {
+			// 실제로 첨부파일 제거
+			deleteFiles(attachList);
+			
+			// redirect의 파라미터에 result = success 값을 설정
+			rttr.addFlashAttribute("result", "success");
+		}
+		
+		return "redirect:/board/list" + cri.getListLink();
+	
+	}
+	
+	
+	/**
+	 * 업로드 폴더의 첨부 파일을 삭제
+	 * @param attachList 첨부 파일들의 정보를 담은 리스트
+	 */
+	private void deleteFiles(List<BoardAttachVO> attachList) {
+		if(attachList == null || attachList.size() == 0) {
+			return;
+		}
+		
+		log.info("첨부 파일들을 서버에서 삭제합니다....");
+		log.info(attachList);
+		
+		attachList.forEach(attach -> {
+			try {
+				Path file = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\" + attach.getUuid() + "_" + attach.getFileName());
+				
+				Files.deleteIfExists(file);
+				
+				// 이미지 파일인 경우, 썸네일도 제거
+				if(Files.probeContentType(file).startsWith("image")) {
+					Path thumbnail = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\s_" + attach.getUuid() + "_" + attach.getFileName());
+					
+					Files.delete(thumbnail);
+				}
+			} catch (Exception e) {
+				log.error("파일 제거 중 에러 발생 : " + e.getMessage());
+			}
+		});
 	}
 }

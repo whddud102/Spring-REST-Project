@@ -32,7 +32,7 @@ public class CommonController {
 		}
 	}
 	
-	@GetMapping("/customLogoutPage")
+	@GetMapping("/customLogout")
 	public void logoutGET() {
 		log.info("로그아웃 요청됨");
 	}

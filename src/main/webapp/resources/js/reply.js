@@ -67,13 +67,18 @@ var replyService = (function() {
 				});
 	}
 	
-	function remove(rno, callback, error) {
+	function remove(rno, replyer, callback, error) {
 		$.ajax({
 			// 전송 방식 지정 (댓글 등록은 post 방식만 처리)
 			type : 'delete',
 			
 			// 요청 url
 			url : '/replies/' + rno,
+			
+			// 요청 시, 서버에 전달할 데이터
+			data : JSON.stringify({rno : rno, replyer : replyer}),
+			
+			contentType: "application/json; charset=utf-8",
 			
 			// http 요청 성공 시 수행되는 이벤트 핸들러
 			success : function(result, status, xhr) {

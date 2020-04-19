@@ -83,7 +83,8 @@ public class BoardController {
 		model.addAttribute("board", service.get(bno));
 		
 	}
-	 
+
+	@PreAuthorize("principal.username == #board.writer")
 	@PostMapping("/modify")
 	public String modify(BoardVO board, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		
@@ -120,8 +121,9 @@ public class BoardController {
 	 * @param rttr redirect 속성 객체
 	 * @return
 	 */
+	@PreAuthorize("principal.username == #writer")
 	@PostMapping("/remove")
-	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr) {
+	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr, String writer) {
 		log.info(" ====== 첨부 파일 제거 ======");
 
 		// 첨부파일들의 정보 목록을 가져옴

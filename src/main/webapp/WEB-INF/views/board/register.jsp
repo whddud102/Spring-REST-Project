@@ -76,6 +76,8 @@
 
 <script type="text/javascript">
 
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfTokenValue = "${_csrf.token}";
 
 $(document).ready(function() {
 	var formObj = $("form[role='form']");
@@ -127,6 +129,9 @@ $(document).ready(function() {
 			url: '/uploadAjaxAction',
 			processData: false,
 			contentType: false,
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			},
 			data : formData,
 			type: "POST",
 			dataType: 'json',
@@ -201,6 +206,9 @@ $(document).ready(function() {
 		$.ajax({
 			url: "/deleteFile",
 			data: {fileName : targetFile, type: type},
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			},
 			// 서버에서 전달받을 데이터 타입
 			type: "POST",
 			success: function(result) {

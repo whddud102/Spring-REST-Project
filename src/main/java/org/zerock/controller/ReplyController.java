@@ -3,6 +3,7 @@ package org.zerock.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class ReplyController {
 	 * @param vo JSON 형태의 댓글을 ReplyVo 객체로 받음
 	 * @return 수행 결과를 헤더에 표시 한 뒤 ResponseEntitiy 반환
 	 */
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping(value = "/new", consumes = "application/JSON", produces = { MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<String> create(@RequestBody ReplyVO vo) {
 		log.info("전달 받은 댓글 : " + vo);
@@ -83,17 +85,20 @@ public class ReplyController {
 		return new ResponseEntity<ReplyVO>(service.get(rno), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("principal.username == #vo.replyer")
 	@DeleteMapping(value = "/{rno}", 
 			produces = {
 					MediaType.TEXT_PLAIN_VALUE})
-	public ResponseEntity<String> remove(@PathVariable("rno") Long rno) {
+	public ResponseEntity<String> remove(@RequestBody ReplyVO vo, @PathVariable("rno") Long rno) {
 		log.info("댓글 삭제(댓글 번호 : " + rno + ")");
+		log.info("댓글 작성자 : " + vo.getReplyer());
 		
 		return service.remove(rno) == 1 
 				? new ResponseEntity<String>("success", HttpStatus.OK)
 				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@PreAuthorize("principal.username == #vo.replyer")
 	@RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH},
 			value = "/{rno}",
 			produces = {MediaType.TEXT_PLAIN_VALUE})	// text_plain_value = string

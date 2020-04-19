@@ -166,6 +166,10 @@
 
 <!-- 첨부파일을 가져오는 자바스크립트 -->
 <script type="text/javascript">
+
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfTokenValue = "${_csrf.token}";
+
 $(document).ready(function() {
 	(function() {
 		var bno = '<c:out value ="${board.bno}"/>';
@@ -262,6 +266,9 @@ $(document).ready(function() {
 			url: '/uploadAjaxAction',
 			processData: false,
 			contentType: false,
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			},
 			data : formData,
 			type: "POST",
 			dataType: 'json',

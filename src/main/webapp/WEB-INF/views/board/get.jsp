@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <%@include file="../includes/header.jsp"%>
 
 <style >
@@ -45,10 +47,18 @@
 					<label>작성자</label> <input class="form-control" name="writer"
 						value='<c:out value="${board.writer }"/>' readonly="readonly">
 				</div>
+	
+				<!-- 로그인한 사용자 ID와 글 작성자 ID가 같을 때만 수정 버튼을 출력 -->
+				<sec:authentication property="principal" var="pinfo"/>
+				
+				<sec:authorize access="isAuthenticated()">
+						<c:if test="${pinfo.username eq board.writer}">
+							<button data-oper='modify' class="btn btn-default">수정</button>
+						</c:if>
+				</sec:authorize>
 
-				<button data-oper='modify' class="btn btn-default">수정</button>
 				<button data-oper='list' class="btn btn-info">목록</button>
-
+				
 				<form id="operForm" action="/board/modify" method="get">
 					<input type='hidden' id='bno' name='bno'
 						value='<c:out value="${board.bno}"/>'> <input
@@ -100,8 +110,12 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<i class="fa fa-comments fa-fw"></i>댓글
-				<button id="addReplyBtn" class="btn btn-primary btn-xs pull-right">댓글
+				
+				<sec:authorize access="isAuthenticated()">
+					<button id="addReplyBtn" class="btn btn-primary btn-xs pull-right">댓글
 					등록</button>
+				</sec:authorize>
+				
 			</div>
 			<!-- /.panel-heading -->
 

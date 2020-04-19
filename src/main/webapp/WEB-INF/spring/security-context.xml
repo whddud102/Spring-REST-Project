@@ -16,8 +16,6 @@
 		
 		<security:access-denied-handler ref="customAccessHandler"/>
 		
-		<!-- CSRF 토큰을 비활성화 -->
-		<security:csrf disabled="true"/>
 		
 		<security:form-login login-page="/customLogin"/>
 		

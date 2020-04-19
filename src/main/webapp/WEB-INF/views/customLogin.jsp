@@ -63,7 +63,7 @@
                             </fieldset>
                             
                             <!-- csrf 토큰 전송 -->
-                            <input type="hidden" name="{_csrf.parameterName}" value="{_csrf.token}">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                         </form>
                     </div>
                 </div>

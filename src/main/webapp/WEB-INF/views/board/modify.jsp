@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <%@include file="../includes/header.jsp"%>
 
 <div class="row">
@@ -20,6 +22,8 @@
 
 			<div class="panel-body">
 				<form role="form" action="/board/modify" method="post">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
+					
 					<!-- pageNum, amount 정보도 같이 전송하도록 추가 -->
 					<input type="hidden" name="pageNum"	value='<c:out value="${cri.pageNum}"/>'> 
 					<input type="hidden" name="amount" value='<c:out value="${cri.amount}"/>'>
@@ -58,9 +62,18 @@
 							value='<fmt:formatDate pattern="yyyy/MM/dd" value="${board.updateDate}"/>'
 							readonly="readonly" type="hidden" />
 					</div>
-
-					<button type="submit" data-oper='modify' class="btn btn-default">수정</button>
-					<button type="submit" data-oper='remove' class="btn btn-danger">삭제</button>
+					
+					<sec:authentication property="principal" var="pinfo"/>
+					
+					<!-- 로그인한 ID와 작성자 ID가 같을 때만 수정/삭제 버튼 출력 -->
+					<sec:authorize access="isAuthenticated()">
+					
+						<c:if test="${pinfo.username eq board.writer}">	
+							<button type="submit" data-oper='modify' class="btn btn-default">수정</button>
+							<button type="submit" data-oper='remove' class="btn btn-danger">삭제</button>
+						</c:if>
+					</sec:authorize>
+					
 					<button type="submit" data-oper='list' class="btn btn-info">목록</button>
 				</form>
 			</div>

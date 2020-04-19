@@ -6,7 +6,6 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<bean id="customAccessHandler" class="org.zerock.security.CustomAccessDeniedHandler"></bean>
-	<bean id="customLoginSuccessHandler" class="org.zerock.security.CustomLoginSuccessHandler"></bean>
 	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 	<bean id="customUserDetailsService" class="org.zerock.security.CustomUserDetailsService"></bean>
 	
@@ -20,7 +19,7 @@
 		<!-- CSRF 토큰을 비활성화 -->
 		<security:csrf disabled="true"/>
 		
-		<security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccessHandler" />
+		<security:form-login login-page="/customLogin"/>
 		
 		<security:logout logout-url="/customLogout" invalidate-session="true" delete-cookies="remember-me, JSESSION_ID"/>
 		

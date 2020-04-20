@@ -11,7 +11,7 @@
 - Tomcat
 - MyBatis
 
-# 개발 일지
+# 개발 환경
 - JDK 1.8
 - Oracle 11g XE
 - Eclipse

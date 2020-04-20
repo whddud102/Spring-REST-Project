@@ -1,8 +1,8 @@
-# 스프링 게시판 프로젝트
+## 스프링 게시판 프로젝트
 > Oracle Database와 Spring Framework를 이용한 게시판
 
 
-# 기술 스택
+## 기술 스택
 - JAVA
 - Spring Framework
 - Spring Security
@@ -13,7 +13,7 @@
 - MyBatis
 
 
-# 개발 환경
+## 개발 환경
 - JDK 1.8
 - Oracle 11g XE
 - Eclipse
@@ -22,4 +22,4 @@
 - Spring Security 5.0.6
 
 
-# 개발 일지
+## 개발 일지

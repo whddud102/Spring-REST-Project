@@ -1,4 +1,4 @@
-# 스프링 게시판
+# 스프링 게시판 프로젝트
 > Oracle Database와 Spring Framework를 이용한 게시판
 
 # 기술 스택

@@ -1,6 +1,10 @@
 ## 스프링 게시판 프로젝트
 > Oracle Database와 Spring Framework를 이용한 게시판
 
+![게시판 프로젝트](./images/Spring_Board.gif)
+
+
+
 
 ## 기술 스택
 - JAVA

@@ -78,14 +78,7 @@
 			$("form").submit();
 		})
 	</script>
-	
-	<c:if test="${param.logout != null }">
-		<script>
-			$(document).ready(function() {
-				alert("로그아웃하였습니다.");
-			});
-		</script>
-	</c:if>
+
 </body>
 
 </html>

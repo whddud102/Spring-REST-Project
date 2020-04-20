@@ -7,7 +7,7 @@
 
 <div class="row">
 	<div class="col-lg-12">
-		<h1 class="page-header">Tables</h1>
+		<h1 class="page-header">게시판</h1>
 	</div>
 	<!-- /.col-lg-12 -->
 </div>
@@ -16,7 +16,7 @@
 	<div class="col-lg-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				Board List Page
+				자유 게시판
 				<button id="regBtn" type="button" class="btn btn-info btn-xs pull-right">게시글
 					등록</button>
 			</div>

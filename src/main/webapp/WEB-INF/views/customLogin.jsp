@@ -36,6 +36,14 @@
 </head>
 
 <body>
+	
+	
+	<c:if test="${param.logout != null }">
+		<script>
+				alert("로그아웃하였습니다.");	
+				self.location = "/board/list";
+		</script>
+	</c:if>
 
     <div class="container">
         <div class="row">

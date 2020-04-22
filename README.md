@@ -24,6 +24,3 @@
 - Tomcat 9.0
 - Spring 5.0.7
 - Spring Security 5.0.6
-
-
-## 개발 일지
